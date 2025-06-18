@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sangam Parmar - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #1e88e5;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .container {
+            padding: 2rem;
+        }
+        .auth-box {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .auth-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .auth-box button {
+            padding: 10px 15px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Sangam Parmar</h1>
+        </div>
+        <div>
+            <a href="/p1" style="color: white; margin-right: 15px;">Projects</a>
+            <a href="/a1" style="color: white;">Assignments</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Welcome to my Portfolio</h2>
+        <div id="auth" class="auth-box"></div>
+    </div>
+
+    <script>
+        let users = [];
+        let isSignup = false;
+
+        function renderForm() {
+            const auth = document.getElementById('auth');
+            auth.innerHTML = `
+                <h3>${isSignup ? 'Signup' : 'Login'} Form</h3>
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <button onclick="${isSignup ? 'signup()' : 'login()'}">${isSignup ? 'Signup' : 'Login'}</button>
+                <button onclick="toggleForm()">${isSignup ? 'Back to Login' : 'Create Account'}</button>
+                <div id="message" style="margin-top:10px;"></div>
+            `;
+        }
+
+        function toggleForm() {
+            isSignup = !isSignup;
+            renderForm();
+        }
+
+        function signup() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if (user && pass) {
+                const exists = users.some(u => u.username === user);
+                if (exists) {
+                    showMessage('Username already exists.', 'red');
+                } else {
+                    users.push({ username: user, password: pass });
+                    isSignup = false;
+                    renderForm();
+                    showMessage('Signup successful. Please login.', 'green');
+                }
+            } else {
+                showMessage('Please enter both fields.', 'red');
+            }
+        }
+
+        function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const match = users.find(u => u.username === user && u.password === pass);
+            if (match) {
+                showMessage('Login successful!', 'green');
+            } else {
+                showMessage('Access denied. Incorrect credentials.', 'red');
+            }
+        }
+
+        function showMessage(msg, color) {
+            const message = document.getElementById('message');
+            message.innerText = msg;
+            message.style.color = color;
+        }
+
+        // Initial render
+        renderForm();
+    </script>
+</body>
+</html>
